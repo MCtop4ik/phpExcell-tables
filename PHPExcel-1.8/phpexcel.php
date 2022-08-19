@@ -67,7 +67,31 @@ setlocale(LC_ALL, 'ru_RU.UTF-8', 'Russian_Russia.65001');
                                             "pdz" => 638583.15,
                                             "summ" => 999200.63,
                                             "calls" => 2
-                                        )
+                                            ),
+                                            "eyJCIiwiMCIsIjAiLCIxNzIiLCIwIiwiMCIsIiAgICAgICA1hMDRTICAifQ == " => array(
+                                                "name" => 'СТИН - сервис!1!!',
+                                                "realizes_date" => array(
+                                                        "27.06 .2022 - 03.07 .2022" => array(
+                                                            "summ" => 78331.66,
+                                                            "calls" => 0
+                                                        ),
+                                                        "04.07 .2022 - 10.07 .2022" => array(
+                                                            "summ" => 403287.96,
+                                                            "calls" => 1
+                                                        ),
+                                                        "11.07 .2022 - 17.07 .2022" => array(
+                                                            "summ" => 418194.42,
+                                                            "calls" => 1
+                                                        )
+                            
+                                                        ),
+                            
+                                                     "dz" => 638583.15,
+                                                     "tdz" => 0,
+                                                     "pdz" => 638583.15,
+                                                     "summ" => 999200.63,
+                                                     "calls" => 2
+                                                 )
                    
                                     )
                                 )
@@ -95,6 +119,8 @@ setlocale(LC_ALL, 'ru_RU.UTF-8', 'Russian_Russia.65001');
 
  foreach ($arr as $key => $index){
     $numOfRows = 0;
+    $countClients = 0;
+    $countGroups = 0;
     $menedger = $index['name'];
     $phpexcel->getActiveSheet()->setCellValueExplicit("A$i", "Менеджер: $menedger", PHPExcel_Cell_DataType::TYPE_STRING);
     for ($k = 0; $k < 4; $k++) {
@@ -107,13 +133,13 @@ setlocale(LC_ALL, 'ru_RU.UTF-8', 'Russian_Russia.65001');
     $numOfRows += 1;
     foreach ($index['groups'] as $managerArray){
         $group = $managerArray['name'];
-        $m = $i + 5;
-        $phpexcel->getActiveSheet()->setCellValueExplicit("A$m", "Группа: $group", PHPExcel_Cell_DataType::TYPE_STRING);
-        $phpexcel->getActiveSheet()->getRowDimension($m)->setOutlineLevel(1);
-        $phpexcel->getActiveSheet()->getRowDimension($m)->setVisible(true);
+        $i = $i + 5;
+        $phpexcel->getActiveSheet()->setCellValueExplicit("A$i", "Группа: $group", PHPExcel_Cell_DataType::TYPE_STRING);
+        $phpexcel->getActiveSheet()->getRowDimension($i)->setOutlineLevel(1);
+        $phpexcel->getActiveSheet()->getRowDimension($i)->setVisible(true);
         for ($k = 0; $k < 4; $k++) {
             $row = $rows[$k];
-            $num1 = $m + $k + 1;
+            $num1 = $i + $k + 1;
             $phpexcel->getActiveSheet()->setCellValueExplicit("D$num1", "$row", PHPExcel_Cell_DataType::TYPE_STRING);
             $phpexcel->getActiveSheet()->getRowDimension($num1)->setOutlineLevel(2);
             $phpexcel->getActiveSheet()->getRowDimension($num1)->setVisible(true);
@@ -121,28 +147,27 @@ setlocale(LC_ALL, 'ru_RU.UTF-8', 'Russian_Russia.65001');
         $numOfRows += 1;
         foreach ($managerArray['clients'] as $clientArray){
             $numOfRows += 1;
-            $c = $i + 10;
+            $i = $i + 5;
             $client = $clientArray['name'];
-            $phpexcel->getActiveSheet()->setCellValueExplicit("A$c", "Клиент: $client", PHPExcel_Cell_DataType::TYPE_STRING);
+            $phpexcel->getActiveSheet()->setCellValueExplicit("A$i", "Клиент: $client", PHPExcel_Cell_DataType::TYPE_STRING);
             $dz = $clientArray['dz'];
             $pdz = $clientArray['pdz'];
             $tdz = $clientArray['tdz'];
             $summa = $clientArray['summ'];
             $sumCalls = $clientArray['calls'];
             for ($n = 0; $n < $numOfRows; $n++){
-                $t = $i + 1 + 5*$n;
-                print_r($t);
+                $t = $i + 1 - 5*$n;
                 $phpexcel->getActiveSheet()->mergeCells("B$t:C$t");
-                $t = $i+ 5*$n + 2;
+                $t = $i - 5*$n + 2;
                 $phpexcel->getActiveSheet()->mergeCells("B$t:C$t");
-                $t = $i+ 5*$n + 1;
+                $t = $i - 5*$n + 1;
                 $phpexcel->getActiveSheet()->setCellValueExplicit("B$t", "ДЗ", PHPExcel_Cell_DataType::TYPE_STRING);
-                $t = $i+ 5*$n + 2;
+                $t = $i - 5*$n + 2;
                 $phpexcel->getActiveSheet()->setCellValueExplicit("B$t", "$dz", PHPExcel_Cell_DataType::TYPE_STRING);
-                $t = $i+ 5*$n + 3;
+                $t = $i - 5*$n + 3;
                 $phpexcel->getActiveSheet()->setCellValueExplicit("B$t", "ТДЗ", PHPExcel_Cell_DataType::TYPE_STRING);
                 $phpexcel->getActiveSheet()->setCellValueExplicit("C$t", "ПДЗ", PHPExcel_Cell_DataType::TYPE_STRING);
-                $t = $i+ 5*$n + 4;
+                $t = $i - 5*$n + 4;
                 $phpexcel->getActiveSheet()->setCellValueExplicit("B$t", $tdz, PHPExcel_Cell_DataType::TYPE_STRING);
                 $phpexcel->getActiveSheet()->setCellValueExplicit("C$t", $pdz, PHPExcel_Cell_DataType::TYPE_STRING);
             }
@@ -156,11 +181,11 @@ setlocale(LC_ALL, 'ru_RU.UTF-8', 'Russian_Russia.65001');
                 $phpexcel->getActiveSheet()->setCellValueExplicit($letters[$j].$ans3, $calls, PHPExcel_Cell_DataType::TYPE_STRING);
                 $j++;
             }
-            $phpexcel->getActiveSheet()->getRowDimension($c)->setOutlineLevel(2);
-            $phpexcel->getActiveSheet()->getRowDimension($c)->setVisible(true);
+            $phpexcel->getActiveSheet()->getRowDimension($i)->setOutlineLevel(2);
+            $phpexcel->getActiveSheet()->getRowDimension($i)->setVisible(true);
             for ($k = 0; $k < 4; $k++) {
                 $row1 = $rows[$k];
-                $num2 = $c + $k + 1;
+                $num2 = $i + $k + 1;
                 $phpexcel->getActiveSheet()->setCellValueExplicit("D$num2", "$row1", PHPExcel_Cell_DataType::TYPE_STRING);
                 $phpexcel->getActiveSheet()->getRowDimension($num2)->setOutlineLevel(3);
                 $phpexcel->getActiveSheet()->getRowDimension($num2)->setVisible(true);
@@ -172,7 +197,7 @@ setlocale(LC_ALL, 'ru_RU.UTF-8', 'Russian_Russia.65001');
             $phpexcel->getActiveSheet()->setCellValueExplicit($letters[$j].$ans, $sumCalls, PHPExcel_Cell_DataType::TYPE_STRING);
         }
     }
-    $i = $i + $numOfRows*5;
+    $i = $i + 5;
     $p = $i;
  }
 
